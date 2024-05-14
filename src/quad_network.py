@@ -10,7 +10,6 @@ import pandas as pd
 import diffsort
 from utils.get_device import get_device
 from torchsummary import summary
-from csv_saver import *
 
 class QuadNetwork(torch.nn.Module):
     def __init__(self, network):
@@ -257,9 +256,6 @@ class NDQuadNetworkGram(torch.nn.Module):
             # Hinge loss 
             quad_loss[:, i] = torch.squeeze(torch.max(torch.zeros_like(quad_comparison), 1.0 - quad_comparison))
         
-        csv_input("LOSS_QUAD_0", torch.sum(quad_loss[:, 0]).item())
-        csv_input("LOSS_QUAD_1", torch.sum(quad_loss[:, 1]).item())
-        csv_input("LOSS_GRAM_LOSS", gram_loss.item())
 
         return torch.sum(quad_loss[:, 0]) + torch.sum(quad_loss[:, 1]) + gram_loss
 
@@ -281,6 +277,7 @@ class NDQuadNetworkGram(torch.nn.Module):
     def load(self, path): 
         self.load_state_dict(torch.load(path, map_location=torch.device(get_device())))
         self.eval()
+
 
 class NDQuadNetworkSpearman(torch.nn.Module): 
     def __init__(self, _, ensemble_models = []):
@@ -308,6 +305,7 @@ class NDQuadNetworkSpearman(torch.nn.Module):
         upper = 6 * torch.sum((x_rank - y_rank).pow(2))
         down = n * (n ** 2 - 1.0)
         return 1.0 - (upper / down)
+
     def forward(self, images_batch): 
 
         quad_loss = torch.zeros((images_batch.shape[0], self.n))
@@ -323,12 +321,7 @@ class NDQuadNetworkSpearman(torch.nn.Module):
             
             quad_loss[:, i] = torch.squeeze(torch.max(torch.zeros_like(quad_comparison), 1.0 - quad_comparison))
 
-
         spearman_loss = self.spearman_correlation(quad_loss[:, 0], quad_loss[:, 1])
-
-        csv_input("LOSS_QUAD_0", torch.sum(quad_loss[:, 0]).item())
-        csv_input("LOSS_QUAD_1", torch.sum(quad_loss[:, 1]).item())
-        csv_input("LOSS_SPEARMAN", spearman_loss.item() * 512.0)
 
         return torch.sum(quad_loss[:, 0]) + torch.sum(quad_loss[:, 1]) + 512.0 * spearman_loss
 
