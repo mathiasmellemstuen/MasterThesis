@@ -1,0 +1,25 @@
+{
+    "experiment": "experiment_generic.Experiment_Generic",
+    "experiment_name": "exp_23_mnist_textured_boldness_network_2",
+    "experiment_display_name": "Ranking features from (E)MNIST",
+    "network": "networks.Network_2",
+    "dataset": "dataset.MNIST_Dataset",
+    "trainer_name": "trainers.train_model",
+    "use_wrapper_module": true,
+    "wrapper_module":"quad_network.QuadNetwork",
+    "wrapper_module_arguments": [],
+    "wrapper_dataset_module":"dataset.QuadDataset",
+    "wrapper_dataset_module_arguments": [0], 
+    "network_arguments": [3],
+    "dataset_arguments": ["datasets/mnist/", "datasets/dtd/", true, true, false, [], 256, 0.0, false],
+    "trainer_arguments": [],
+    "dataloader_workers": 32,
+    "learning_rate": 1e-3,
+    "epochs": 250,
+    "batch_size": 256,
+    "save_interval": 10,
+    "seed": 2023,
+    "test_functions": [ ["test_functions.get_quad_prediction_scores", [1]],
+                        ["test_functions.data_rasterize_lossy", [0.02, "", 5, 2]]
+                      ]
+}

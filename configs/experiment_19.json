@@ -1,0 +1,29 @@
+{
+    "experiment": "experiment_generic.Experiment_Generic",
+    "experiment_name": "exp_19_3d_shapes_angle_frame_masked_dataset_network_2_with_small_middle_small_gap",
+    "experiment_display_name": "Ranking out-of-distribution 3D-cubes",
+    "network": "networks.Network_2",
+    "dataset": "dataset.Masked_3D_Shapes_Gap_Dataset",
+    "trainer_name": "trainers.train_model",
+    "use_wrapper_module": true,
+    "wrapper_module":"quad_network.QuadNetwork",
+    "wrapper_module_arguments": [],
+    "wrapper_dataset_module":"dataset.QuadDataset",
+    "wrapper_dataset_module_arguments": [0], 
+    "network_arguments": [3],
+    "dataset_arguments": ["datasets/3dcubes_masks", 0.0, 0, 4, 1],
+    "trainer_arguments": [],
+    "dataloader_workers": 32,
+    "learning_rate": 1e-3,
+    "epochs": 500,
+    "batch_size": 256,
+    "save_interval": 50,
+    "seed": 2023,
+    "test_functions": [
+                        ["test_functions.get_quad_prediction_scores_gap", [1]],
+                        ["test_functions.data_rasterize_lossy", [0.2, "", 2, 0]],
+                        ["evaluation_metric.sorting_error", []],
+                        ["evaluation_metric.spearman_correlation", []]
+                      ],
+    "plot_functions": []
+}

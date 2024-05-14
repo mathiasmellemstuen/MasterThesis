@@ -1,0 +1,9 @@
+__pycache__/
+data/images
+figures/quad_network
+figures/
+data/quad_network
+.commander/
+bak/
+.idea/
+.vscode/
